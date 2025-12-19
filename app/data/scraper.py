@@ -85,6 +85,29 @@ class BrowserScraper:
             logger.error(f"Error fetching page source from {url}: {e}")
             return ""
 
+    def save_page_source(self, html_content: str, filename: str, output_dir: str = "tmp-al-service") -> str:
+        """
+        Saves the HTML content to a file.
+        
+        Args:
+            html_content (str): The HTML content to save.
+            filename (str): The name of the file.
+            output_dir (str): The directory to save the file in.
+            
+        Returns:
+            str: The absolute path to the saved file.
+        """
+        import os
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            
+        filepath = os.path.join(output_dir, filename)
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(html_content)
+            
+        logger.info(f"Saved HTML to {filepath}")
+        return os.path.abspath(filepath)
+
     def close(self):
         """
         Closes the browser and quits the driver.
