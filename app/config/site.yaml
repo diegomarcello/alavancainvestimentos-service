@@ -1,0 +1,96 @@
+# Configuration file for data sources/sites
+# This file lists potential sites to retrieve financial and investment data from.
+# Each entry suggests parameters that might be needed for scraping or API access.
+
+sites:
+  - name: "Status Invest"
+    id: "status_invest"
+    url: "https://statusinvest.com.br"
+    method: "scraping"
+    description: "Comprehensive financial data for Brazilian stocks, FIIs, and treasures."
+    enabled: true
+    endpoints:
+      - path: "/{asset_type}/{ticker}"
+        description: "Page for a specific asset"
+        parameters:
+          asset_type:
+            description: "Type of asset"
+            options: ["acoes", "fiis", "bdrs"]
+            required: true
+          ticker:
+            description: "Asset ticker symbol (e.g., PETR4, KNIP11)"
+            required: true
+
+  - name: "Yahoo Finance"
+    id: "yahoo_finance"
+    url: "https://query1.finance.yahoo.com/v7/finance/download"
+    method: "api"
+    description: "Historical market data, real-time quotes, and news."
+    enabled: true
+    parameters:
+      symbol:
+        description: "Stock symbol (e.g., PETR4.SA, AAPL)"
+        required: true
+      period1:
+        description: "Start timestamp"
+        required: false
+      period2:
+        description: "End timestamp"
+        required: false
+      interval:
+        description: "Data interval"
+        options: ["1d", "1wk", "1mo"]
+        default: "1d"
+
+  - name: "Banco Central do Brasil (SGS)"
+    id: "bcb_sgs"
+    url: "https://api.bcb.gov.br/dados/serie/bcdata.sgs.{code}/dados"
+    method: "api"
+    description: "Time Series Management System - Economic indicators (Selic, IPCA, Dollar)."
+    enabled: true
+    parameters:
+      code:
+        description: "Series code (e.g., 432 for Selic, 11 for Selic Daily, 10813 for Dollar)"
+        required: true
+      formato:
+        description: "Response format"
+        options: ["json", "csv"]
+        default: "json"
+
+  - name: "Fundamentus"
+    id: "fundamentus"
+    url: "https://www.fundamentus.com.br"
+    method: "scraping"
+    description: "Fundamentalist data for Brazilian stocks and FIIs."
+    enabled: false
+    selectors:
+      title: "h1"
+      table: "table.w728"
+    endpoints:
+      - path: "/detalhes.php"
+        parameters:
+          papel:
+            description: "Stock ticker (e.g., WEGE3)"
+            required: true
+
+  - name: "CVM (Open Data)"
+    id: "cvm_dados_abertos"
+    url: "http://dados.cvm.gov.br/dados"
+    method: "download"
+    description: "Official regulated data from Brazilian Securities and Exchange Commission."
+    enabled: false
+    parameters:
+      dataset:
+        description: "Dataset to download (e.g., CIA_ABERTA, FUNDOS)"
+        required: true
+
+  - name: "B3 (Official Website)"
+    id: "b3_site"
+    url: "https://www.b3.com.br"
+    method: "scraping"
+    description: "Official data from Brazilian Stock Exchange."
+    enabled: false
+    parameters:
+      keyword:
+        description: "Search keyword or ticker"
+        required: false

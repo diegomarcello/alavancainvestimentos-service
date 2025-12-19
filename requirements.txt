@@ -1,0 +1,8 @@
+selenium
+webdriver-manager
+pyyaml
+requests
+beautifulsoup4
+html5lib
+pandas
+spacy
